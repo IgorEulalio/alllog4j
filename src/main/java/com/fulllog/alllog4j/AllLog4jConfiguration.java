@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -22,16 +21,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-@Component
 public class AllLog4jConfiguration extends DispatcherServlet implements ClientHttpRequestInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger("HttpLogger");
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private static ObjectNode rootNode = mapper.createObjectNode();
+    private static final Map<String, List<Object>> requestsAndResponses = new HashMap<>();
 
-    private static HashMap<Object, Object> requestsAndResponses = new HashMap<>();
+    @Value("${fulllog.alllog4j.ofuscate-headers}")
+    private String[] headersToOfuscate;
 
     @Override
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -39,7 +38,7 @@ public class AllLog4jConfiguration extends DispatcherServlet implements ClientHt
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
         // Create a JSON object to store HTTP log information
-
+        ObjectNode rootNode = mapper.createObjectNode();
         rootNode.put("uri", requestWrapper.getRequestURI());
         rootNode.put("clientIp", requestWrapper.getRemoteAddr());
         rootNode.set("requestHeaders", mapper.valueToTree(getRequestHeaders(requestWrapper)));
@@ -62,19 +61,29 @@ public class AllLog4jConfiguration extends DispatcherServlet implements ClientHt
 
             rootNode.set("responseHeaders", mapper.valueToTree(getResponsetHeaders(responseWrapper)));
 
+            rootNode.set("integrations", mapper.valueToTree(requestsAndResponses));
+
+//            logando request e response da minha app
             logger.info(rootNode.toString());
         }
     }
 
     private Object getRequestHeaders(HttpServletRequest request) {
+
+        List<String> headersOfuscate = Arrays.asList(headersToOfuscate);
+
         Map<String, Object> headers = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            headers.put(headerName, request.getHeader(headerName));
+            if (headersOfuscate.contains(headerName)) {
+                headers.put(headerName, "XXX");
+            } else {
+                headers.put(headerName, request.getHeader(headerName));
+            }
         }
-        return headers;
 
+        return headers;
     }
 
     private Object getResponsetHeaders(ContentCachingResponseWrapper response) {
@@ -92,11 +101,9 @@ public class AllLog4jConfiguration extends DispatcherServlet implements ClientHt
         ClientHttpResponse response = execution.execute(request, body);
         ObjectNode objectResponse = traceResponse(response);
 
-        requestsAndResponses.put(objectRequest.get("uri").toString(), Arrays.asList(objectRequest, objectResponse));
+        requestsAndResponses.put(objectRequest.get("uri").toPrettyString(), Arrays.asList(objectRequest, objectResponse));
 
-        System.out.println(requestsAndResponses.size());
-        rootNode.put("integrations", mapper.valueToTree(requestsAndResponses));
-
+//        logger.info("{\"Request\": {}\n,\"Response\": {}}", objectRequest, objectResponse);
         return response;
     }
 
