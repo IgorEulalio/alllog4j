@@ -46,7 +46,6 @@ Como o projeto ainda esta em beta, e necessario baixar o projeto e executar um e
     "clientIp": "0:0:0:0:0:0:0:1",
     "requestHeaders": {
         "authorization": "Bearer igor-eulalio",
-        "x-itau-apikey": "129012-1390139-12901",
         "postman-token": "19d8491e-7e45-4209-a268-ec4e5181fae2",
         "host": "localhost:3030",
         "connection": "keep-alive",
@@ -131,7 +130,6 @@ Apos adicionados a essa lista, os headers em questao ficarao ofuscados da seguin
 {"requestHeaders": {
 
         "authorization": "XXX",
-        "x-itau-apikey": "129012-1390139-12901",
         "postman-token": "XXX",
         "host": "localhost:3030",
         "connection": "keep-alive",
