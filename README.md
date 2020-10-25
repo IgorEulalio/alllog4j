@@ -7,7 +7,7 @@ O AllLog4J é um componente que auxilia na formatacão e padronização de logs 
 Para utiliza-lo e bem simples, precisamos executar apenas alguns passos:
 
 1. Importe a dependencia no pom.xml da sua aplicacao:
-        `<!--        Logger dependencies-->
+        `<!--        Logger dependencies--> \n
         <dependency>
             <groupId>com.fulllog</groupId>
             <artifactId>alllog4j</artifactId>
