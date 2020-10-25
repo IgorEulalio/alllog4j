@@ -103,7 +103,7 @@ public class AllLog4jConfiguration extends DispatcherServlet implements ClientHt
 
         requestsAndResponses.put(objectRequest.get("uri").toPrettyString(), Arrays.asList(objectRequest, objectResponse));
 
-//        logger.info("{\"Request\": {}\n,\"Response\": {}}", objectRequest, objectResponse);
+//      logger.info("{\"Request\":{},\"Response\":{}}", objectRequest, objectResponse);
         return response;
     }
 
