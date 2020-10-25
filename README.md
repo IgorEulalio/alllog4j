@@ -1,13 +1,16 @@
 # AllLog4j component to log.
 
 ## O que é:
+
 O AllLog4J é um componente que auxilia na formatacão e padronização de logs para apps que utilizam Java.
 
 ### Como utilizar:
+
 Para utiliza-lo e bem simples, precisamos executar apenas alguns passos:
 
 1. Importe a dependencia no pom.xml da sua aplicacao:
-```xml
+
+``` xml
         <dependency>
             <groupId>com.fulllog</groupId>
             <artifactId>alllog4j</artifactId>
@@ -17,7 +20,7 @@ Para utiliza-lo e bem simples, precisamos executar apenas alguns passos:
 
 2. Crie uma classe LogConfiguration para implementar os @Beans necessarios:
 
-```java
+``` java
 @Configuration
 public class LogConfiguration {
     
@@ -33,9 +36,11 @@ public class LogConfiguration {
 }
 ```
 
+Como o projeto ainda esta em beta, e necessario baixar o projeto e executar um empacotamento (mvn clean install) para gerar a root-library dentro do repo .m2, em breve iremos subir no maven.
+
 3. Pronto! Agora você pode ver seu log no seguinte output:
 
-```json
+``` json
 {
     "uri": "/users/5eff256dfcf1b206ab063061",
     "clientIp": "0:0:0:0:0:0:0:1",
@@ -114,7 +119,28 @@ public class LogConfiguration {
 ```
 
 4. Ofuscando headers:
+
 A biblioteca AllLog4j também oferece ofuscacao de alguns headers que podem conter dados sensiveis, para isso, basta adicionar a seguinte configuracao dentro do application.propperties:
-```java
+
+``` java
 fulllog.alllog4j.ofuscate-headers=authorization, postman-token, other-sensitive-data-header
 ```
+
+Apos adicionados a essa lista, os headers em questao ficarao ofuscados da seguinte forma:
+```json
+{"requestHeaders": {
+
+        "authorization": "XXX",
+        "x-itau-apikey": "129012-1390139-12901",
+        "postman-token": "XXX",
+        "host": "localhost:3030",
+        "connection": "keep-alive",
+        "cache-control": "no-cache",
+        "accept-encoding": "gzip, deflate, br",
+        "user-agent": "PostmanRuntime/7.26.5",
+        "accept": "*/*"
+    }
+}
+```
+
+
