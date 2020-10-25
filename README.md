@@ -7,16 +7,16 @@ O AllLog4J é um componente que auxilia na formatacão e padronização de logs 
 Para utiliza-lo e bem simples, precisamos executar apenas alguns passos:
 
 1. Importe a dependencia no pom.xml da sua aplicacao:
-        `<!--        Logger dependencies--> \n
+        ```<!--        Logger dependencies-->
         <dependency>
             <groupId>com.fulllog</groupId>
             <artifactId>alllog4j</artifactId>
             <version>0.0.1-1</version>
         </dependency>
-        `
+        ```
 
 2. Crie uma classe LogConfiguration para implementar os @Beans necessarios:
-`@Configuration
+```@Configuration
 public class LogConfiguration {
     
     @Bean
@@ -28,10 +28,10 @@ public class LogConfiguration {
         return new AllLog4jConfiguration();
     }
     
-}`
+}```
 
 3. Pronto! Agora você pode ver seu log no seguinte output:
-`<{
+```{
     "uri": "/users/5eff256dfcf1b206ab063061",
     "clientIp": "0:0:0:0:0:0:0:1",
     "requestHeaders": {
@@ -105,8 +105,8 @@ public class LogConfiguration {
         "Date": "Fri, 23 Oct 2020 19:26:04 GMT",
         "Content-Type": "application/json"
     }
-}>`
+}>```
 
 4. Ofuscando headers:
 A biblioteca AllLog4j também oferece ofuscacao de alguns headers que podem conter dados sensiveis, para isso, basta adicionar a seguinte configuracao dentro do application.propperties:
-`<fulllog.alllog4j.ofuscate-headers=postman-token, authorization, x-itau-apikey>`
+```fulllog.alllog4j.ofuscate-headers=authorization, postman-token, other-sensitive-data-header```
