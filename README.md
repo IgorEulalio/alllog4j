@@ -143,4 +143,19 @@ Apos adicionados a essa lista, os headers em questao ficarao ofuscados da seguin
 }
 ```
 
+5. Logando requisicoes a outros services:
+
+Ao criar a sua classe de integracao, seja la qual o framework que tiver utilizando (no exemplo utilizei o RestTemplate), basta passar a classe como um interceptor, a biblioteca fara todo trabalho de interceptar a requisicao e incluir tambem qualquer chamada feita por essa classe dentro do log:
+```java
+RestTemplate restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+
+        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+
+        interceptors.add(new LoggingRequestInterceptor());
+
+        restTemplate.setInterceptors(interceptors);
+
+        ResponseEntity<UserDTO[]> userReceived = restTemplate.getForEntity("http://localhost:3030/users/", UserDTO[].class);
+```
+
 
