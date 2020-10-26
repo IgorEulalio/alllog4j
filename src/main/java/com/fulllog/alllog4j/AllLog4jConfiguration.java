@@ -29,7 +29,7 @@ public class AllLog4jConfiguration extends DispatcherServlet {
 
     private static final Map<String, List<Object>> requestsAndResponses = new HashMap<>();
 
-    @Value("${fulllog.alllog4j.ofuscate-headers}")
+    @Value("${fulllog.alllog4j.ofuscate-headers:}")
     private String[] headersToOfuscate;
 
     @Override
