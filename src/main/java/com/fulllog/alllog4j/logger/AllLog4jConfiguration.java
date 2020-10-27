@@ -1,4 +1,4 @@
-package com.fulllog.alllog4j;
+package com.fulllog.alllog4j.logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

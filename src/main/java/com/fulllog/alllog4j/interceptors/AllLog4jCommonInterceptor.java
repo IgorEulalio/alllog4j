@@ -1,4 +1,4 @@
-package com.fulllog.alllog4j;
+package com.fulllog.alllog4j.interceptors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class AllLog4jInterceptor implements ClientHttpRequestInterceptor {
+public class AllLog4jCommonInterceptor implements ClientHttpRequestInterceptor {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
